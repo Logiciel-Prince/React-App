@@ -1,24 +1,53 @@
-import logo from './logo.svg';
 import './App.css';
+import About from './components/About';
+import Navbar from './components/NavBar';
+import TextForm from './components/TextForm';
+import React, { useState } from 'react';
+import Alerts from './components/Alerts';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+
 
 function App() {
+  const [btnText, setBtnText] = useState("Enable Dark Mode");
+  const [mode, setMode] = useState("light");
+  const [alert, setAlert] = useState(null);
+
+  const showAlert = (message, type) => {
+    setAlert({
+      message: message,
+      type: type || 'success', // success | error | warning | info
+    });
+    setTimeout(() => {
+      setAlert(null);
+    }, 1500);
+  }
+  const toggleMode = () => {
+    if (mode === "light") {
+      setMode('dark');
+      document.body.style.backgroundColor = 'black';
+      showAlert("Dark Mode has been enabled", "success");
+      setBtnText("Enable Light Mode");
+    }
+    else {
+      setMode('light');
+      document.body.style.backgroundColor = 'white';
+      showAlert("Light Mode has been enabled", "success");
+      setBtnText("Enable dark Mode");
+    }
+  }
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Router>
+        <Navbar title="TextUtils" mode={mode} toggleMode={toggleMode} btnText={btnText} />
+        <Alerts alert={alert} />
+        <div className="container my-3">
+          <Routes>
+            <Route exact path='/' element={<TextForm heading="Enter the text to analyse" mode={mode} />} />
+            <Route exact path='/About' element={<About />} />
+          </Routes>
+        </div>
+      </Router>
+    </>
   );
 }
 
