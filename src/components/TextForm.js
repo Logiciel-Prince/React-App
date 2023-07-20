@@ -29,15 +29,16 @@ export default function TextForm(props) {
                 <div className="mb-3">
                     <textarea className={`form-control bg-${props.mode} text-${props.mode === 'light' ? 'dark' : 'light'}`} onChange={handleOnChange} placeholder="Enter Text Here" value={text} id="myText" rows="8"></textarea>
                 </div>
-                <button className="btn btn-primary mx-2" onClick={handleUpperCaseClick}>Convert to UpperCase</button>
-                <button className="btn btn-primary mx-2" onClick={handleSentenceCaseClick}>Convert to Sentence</button>
-                <button className="btn btn-info mx-2" onClick={handleLowerCaseClick}>Convert to LowerCase</button>
-                <button className="btn btn-danger mx-2" onClick={handleClearCase}>Clear Text</button>
+                <button disabled={text ? text.length === 0 : "false"} className="btn btn-primary mx-2 my-2" onClick={handleUpperCaseClick}>Convert to UpperCase</button>
+                <button disabled={text ? text.length === 0 : "false"} className="btn btn-primary mx-2 my-2" onClick={handleSentenceCaseClick}>Convert to Sentence</button>
+                <button disabled={text ? text.length === 0 : "false"} className="btn btn-info mx-2 my-2" onClick={handleLowerCaseClick}>Convert to LowerCase</button>
+                <button disabled={text ? text.length === 0 : "false"} className="btn btn-danger mx-2 my-2" onClick={handleClearCase}>Clear Text</button>
             </div>
             <div className={`container my-3 bg-${props.mode} p-4 text-${props.mode === 'light' ? 'dark' : 'light'}`}>
                 <h1>Your text here</h1>
-                <p>{text ? `${text.split(" ").length} words and ${text.length} characters` : ""}</p>
+                <p>{text ? `${text.split(/\s+/).filter((element) => { return element.length !== 0 }).length} words and ${text.length} characters` : ""}</p>
                 <h3>Preview</h3>
+                <p>{text ? 0.008 * text.split(" ").filter((element) => { return element.length !== 0 }).length : ""} Minutes Read</p>
                 <p>{text && text.length > 0 ? text : "Enter Text above to Preview Here"}</p>
             </div>
         </>
